@@ -14,7 +14,7 @@
       <%= if length(variants(@variants, :color)) > 1 do %>
         <h3><%= dgettext "product", "Colors" %></h3>
 
-        <ul class="choice color">
+        <ul class="selector color">
           <%= for color <- variants(@variants, :color) do %>
             <li>
               <% similar_variant = variant_for(@variants, @variant, color: color) %>
@@ -68,7 +68,7 @@
       <%= if length(variants(@variants, :size)) > 1 do %>
         <h3><%= dgettext "product", "Sizes" %></h3>
 
-        <ul class="choice size">
+        <ul class="selector size">
           <%= for size <- variants(@variants, :size) do %>
             <li>
               <% similar_variant = variant_for(@variants, @variant, size: size) %>
@@ -123,7 +123,6 @@
       <%= submit dgettext("product", "Add to Cart"),
         disabled: not @variant.available,
         phx_disable_with: dgettext("product", "Adding to Cart")
-        class: "button" %>
       %>
     </div>
   </div>
