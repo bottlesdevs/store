@@ -1,57 +1,3 @@
-<section>
-  <h1>
-    <%= dgettext "index", "Support Development." %><br />
-    <%= dgettext "index", "Get Gear. Win/Win."%>
-  </h1>
-
-  <p>
-    <%= dgettext "index", "Every purchase goes towards developing elementary OS, its apps, and its services. We're a small team, mostly volunteer, working constantly to make elementary better—your support helps make elementary OS more sustainable." %>
-  </p>
-</section>
-
-<section id="devices">
-  <h2><%= dgettext "index", "Devices"%></h2>
-
-  <p>
-    <%= dgettext "index", "Hardware devices with elementary OS can be purchased from the following retailers. Purchasing from these companies helps support elementary OS." %>
-  </p>
-
-  <ul>
-    <li>
-      <a href="https://laptopwithlinux.com/?ref=36&utm_source=referral&utm_medium=elementary&utm_campaign=elementary" target="_blank" title="Visit Laptop With Linux">Laptop With Linux</a>
-      <ul>
-        <li><%= dgettext "index", "Laptops, mini desktops"%></li>
-        <li><%= dgettext "index", "Based in the Netherlands"%></li>
-        <li><%= dgettext "index", "Free shipping within EU"%></li>
-      </ul>
-    </li>
-
-    <li>
-      <a href="https://slimbook.es?utm_source=referral&utm_medium=elementary&utm_campaign=elementary" target="_blank" title="Visit Slimbook">Slimbook</a>
-      <ul>
-        <li><%= dgettext "index", "Laptops, desktops, mini desktops, all-in-ones"%></li>
-        <li><%= dgettext "index", "Based in Spain"%></li>
-        <li><%= dgettext "index", "International shipping"%></li>
-      </ul>
-    </li>
-
-    <li>
-      <a href="https://starlabs.systems/?rfsn=4227837.e8f025" target="_blank" title="Visit Star Labs">Star Labs</a>
-      <ul>
-        <li><%= dgettext "index", "Laptops"%></li>
-        <li><%= dgettext "index", "Based in the United Kingdom"%></li>
-        <li><%= dgettext "index", "International shipping"%></li>
-      </ul>
-    </li>
-  </ul>
-
-  <p>
-    <small>
-      <%= dgettext "index", "Hardware and software support for these devices are provided by the retailer." %>
-    </small>
-  </p>
-</section>
-
 <%= for {category, products} <- group_by_category(@products) do %>
   <section class="products" id="<%= category_slug(hd(products).category) %>">
     <h2><%= hd(products).category %></h2>
@@ -74,17 +20,3 @@
     </ul>
   </section>
 <% end %>
-
-<section id="shipping">
-  <h2><%= dgettext "index", "Worldwide Shipping"%></h2>
-
-  <p>
-    <%= dgettext "index", "We ship apparel and accessories all around the world! Orders are made on-demand typically within 2–7 days and will be shipped with the method you choose at checkout. Due to COVID-19, orders may be delayed. Production is on schedule, but delays may still occur with fulfillment and shipping depending on the order, shipping method, and destination." %>
-  </p>
-
-  <p>
-    <small>
-      <%= dgettext "index", "Crimea, Cuba, Iran, Syria, and North Korea excluded. Shipping methods, prices, and times vary by country. Shipments outside of the USA may incur customs fees depending on the origin and destination countries." %>
-    </small>
-  </p>
-</section>
