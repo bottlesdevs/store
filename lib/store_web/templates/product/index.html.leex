@@ -1,128 +1,130 @@
 <%= form_for :cart, Routes.cart_path(Endpoint, :create, @variant.id), [class: "product"], fn f -> %>
   <h1><%= @product.name %></h1>
 
-  <img
-    alt="<%= @product.name %>"
-    src="<%= @variant.preview_url %>"
-    width="800"
-  />
+  <div class="splitter">
+    <img
+      alt="<%= @product.name %>"
+      src="<%= @variant.preview_url %>"
+      width="800"
+    />
 
-  <div class="options">
-    <h2>$<%= format_price(@variant.price) %></h2>
+    <div class="options">
+      <h2>$<%= format_price(@variant.price) %></h2>
 
-    <%= if length(variants(@variants, :color)) > 1 do %>
-      <h3><%= dgettext "product", "Colors" %></h3>
+      <%= if length(variants(@variants, :color)) > 1 do %>
+        <h3><%= dgettext "product", "Colors" %></h3>
 
-      <ul class="color">
-        <%= for color <- variants(@variants, :color) do %>
-          <li>
-            <% similar_variant = variant_for(@variants, @variant, color: color) %>
+        <ul class="color">
+          <%= for color <- variants(@variants, :color) do %>
+            <li>
+              <% similar_variant = variant_for(@variants, @variant, color: color) %>
 
-            <%= cond do %>
-              <% similar_variant == nil -> %>
-                <button
-                  type="button"
-                  class="option disabled"
-                  title="<%= dgettext "product", "Unavailable for %{size}", size: @variant.size %>"
-                  disabled
-                >
-                  <span class="color" style="background-color:<%= color_code_for(@variants, color) %>;"></span>
-                  <span class="name"><%= color %></span>
-                  <span class="warning"><%= dgettext "product", "Unavailable for %{size}", size: @variant.size %></span>
-                </button>
+              <%= cond do %>
+                <% similar_variant == nil -> %>
+                  <button
+                    type="button"
+                    class="option disabled"
+                    title="<%= dgettext "product", "Unavailable for %{size}", size: @variant.size %>"
+                    disabled
+                  >
+                    <span class="color" style="background-color:<%= color_code_for(@variants, color) %>;"></span>
+                    <span class="name"><%= color %></span>
+                    <span class="warning"><%= dgettext "product", "Unavailable for %{size}", size: @variant.size %></span>
+                  </button>
 
-              <% not similar_variant.available -> %>
-                <button
-                  type="button"
-                  class="option disabled"
-                  title="<%= dgettext "product", "%{size} is out of stock", size: @variant.size %>"
-                  disabled
-                >
-                  <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
-                  <span class="name"><%= color %></span>
-                  <span class="warning"><%= dgettext "product", "%{size} is out of stock", size: @variant.size %></span>
-                </button>
+                <% not similar_variant.available -> %>
+                  <button
+                    type="button"
+                    class="option disabled"
+                    title="<%= dgettext "product", "%{size} is out of stock", size: @variant.size %>"
+                    disabled
+                  >
+                    <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
+                    <span class="name"><%= color %></span>
+                    <span class="warning"><%= dgettext "product", "%{size} is out of stock", size: @variant.size %></span>
+                  </button>
 
-              <% similar_variant.id == @variant.id -> %>
-                <button
-                  type="button"
-                  class="option active"
-                  active
-                >
-                  <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
-                  <span class="name"><%= color %></span>
-                </button>
+                <% similar_variant.id == @variant.id -> %>
+                  <button
+                    type="button"
+                    class="option active"
+                    active
+                  >
+                    <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
+                    <span class="name"><%= color %></span>
+                  </button>
 
-              <% true -> %>
-                <%= live_patch to: Routes.product_path(Endpoint, :index, @product.id, similar_variant.id), replace: true, title: color do %>
-                  <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
-                  <span class="name"><%= color %></span>
-                <% end %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
+                <% true -> %>
+                  <%= live_patch to: Routes.product_path(Endpoint, :index, @product.id, similar_variant.id), replace: true, title: color do %>
+                    <span class="color" style="background-color:<%= similar_variant.color_code %>;"></span>
+                    <span class="name"><%= color %></span>
+                  <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
 
-    <%= if length(variants(@variants, :size)) > 1 do %>
-      <h3><%= dgettext "product", "Sizes" %></h3>
+      <%= if length(variants(@variants, :size)) > 1 do %>
+        <h3><%= dgettext "product", "Sizes" %></h3>
 
-      <ul class="size">
-        <%= for size <- variants(@variants, :size) do %>
-          <li>
-            <% similar_variant = variant_for(@variants, @variant, size: size) %>
+        <ul class="size">
+          <%= for size <- variants(@variants, :size) do %>
+            <li>
+              <% similar_variant = variant_for(@variants, @variant, size: size) %>
 
-            <%= cond do %>
-              <% similar_variant == nil -> %>
-                <button
-                  type="button"
-                  class="option disabled"
-                  title="<%= dgettext "product", "Unavailable in %{color}", color: @variant.color %>"
-                  disabled
-                >
-                  <%= size %>
-                </button>
+              <%= cond do %>
+                <% similar_variant == nil -> %>
+                  <button
+                    type="button"
+                    class="option disabled"
+                    title="<%= dgettext "product", "Unavailable in %{color}", color: @variant.color %>"
+                    disabled
+                  >
+                    <%= size %>
+                  </button>
 
-              <% not similar_variant.available -> %>
-                <button
-                  type="button"
-                  class="option disabled"
-                  title="<%= dgettext "product", "%{color} is out of stock", color: @variant.color %>"
-                  disabled
-                >
-                  <%= size %>
-                </button>
+                <% not similar_variant.available -> %>
+                  <button
+                    type="button"
+                    class="option disabled"
+                    title="<%= dgettext "product", "%{color} is out of stock", color: @variant.color %>"
+                    disabled
+                  >
+                    <%= size %>
+                  </button>
 
-              <% similar_variant.id == @variant.id -> %>
-                <button
-                  type="button"
-                  class="option active"
-                  active
-                >
-                  <%= size %>
-                </button>
+                <% similar_variant.id == @variant.id -> %>
+                  <button
+                    type="button"
+                    class="option active"
+                    active
+                  >
+                    <%= size %>
+                  </button>
 
-              <% true -> %>
-                <%= live_patch to: Routes.product_path(Endpoint, :index, @product.id, similar_variant.id), replace: true, title: size do %>
-                  <%= size %>
-                <% end %>
-            <% end %>
-          </li>
-        <% end %>
-      </ul>
-    <% end %>
+                <% true -> %>
+                  <%= live_patch to: Routes.product_path(Endpoint, :index, @product.id, similar_variant.id), replace: true, title: size do %>
+                    <%= size %>
+                  <% end %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
 
-    <%= if not @variant.available do %>
-      <div class="alert alert--error alert--bubble">
-        <%= dgettext("product", "This product is currently unavailable") %>
-      </div>
-    <% end %>
+      <%= if not @variant.available do %>
+        <div class="alert alert--error alert--bubble">
+          <%= dgettext("product", "This product is currently unavailable") %>
+        </div>
+      <% end %>
 
-    <%= hidden_input f, :quantity, value: 1 %>
-    <%= submit dgettext("product", "Add to Cart"),
-      disabled: not @variant.available,
-      phx_disable_with: dgettext("product", "Adding to Cart")
-    %>
+      <%= hidden_input f, :quantity, value: 1 %>
+      <%= submit dgettext("product", "Add to Cart"),
+        disabled: not @variant.available,
+        phx_disable_with: dgettext("product", "Adding to Cart")
+      %>
+    </div>
   </div>
 
   <div class="description">
