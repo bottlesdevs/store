@@ -1,40 +1,42 @@
-<ul>
-  <!--
-    NOTE: There is a live view bug in chrome that makes this not work all
-    the time.
-    https://github.com/phoenixframework/phoenix_live_view/issues/1204
-  -->
-  <%= for category <- categories() do %>
-    <li>
-      <a href="<%= Routes.index_path(Endpoint, :index) %>#<%= category_slug(category) %>">
-        <%= category %>
-      </a>
-    </li>
-  <% end %>
-</ul>
+<div class="menu">
+  <ul>
+    <!--
+      NOTE: There is a live view bug in chrome that makes this not work all
+      the time.
+      https://github.com/phoenixframework/phoenix_live_view/issues/1204
+    -->
+    <%= for category <- categories() do %>
+      <li>
+        <a href="<%= Routes.index_path(Endpoint, :index) %>#<%= category_slug(category) %>">
+          <%= category %>
+        </a>
+      </li>
+    <% end %>
+  </ul>
 
-<ul>
-  <%= if count(assigns) > 0 do %>
-    <li>
-      <%= form_for :delete, Routes.cart_path(Endpoint, :reset), [
-        id: "reset-cart",
-        method: :delete,
-        phx_hook: "SetSession"
-      ], fn _f -> %>
-        <%= submit dgettext "layout", "Clear Cart" %>
-      <% end %>
-    </li>
+  <ul>
+    <%= if count(assigns) > 0 do %>
+      <li>
+        <%= form_for :delete, Routes.cart_path(Endpoint, :reset), [
+          id: "reset-cart",
+          method: :delete,
+          phx_hook: "SetSession"
+        ], fn _f -> %>
+          <%= submit dgettext "layout", "Clear Cart" %>
+        <% end %>
+      </li>
 
-    <li>
-      <%= live_patch to: Routes.checkout_path(Endpoint, :index) do %>
-        <%= dgettext "layout", "Cart (%{count})", count: count(assigns) %>
-      <% end %>
-    </li>
-  <% else %>
-    <li>
-      <%= live_patch to: Routes.checkout_path(Endpoint, :index) do %>
-        <%= dgettext "layout", "Cart empty" %>
-      <% end %>
-    </li>
-  <% end %>
-</ul>
+      <li>
+        <%= live_patch to: Routes.checkout_path(Endpoint, :index) do %>
+          <%= dgettext "layout", "Cart (%{count})", count: count(assigns) %>
+        <% end %>
+      </li>
+    <% else %>
+      <li>
+        <%= live_patch to: Routes.checkout_path(Endpoint, :index) do %>
+          <%= dgettext "layout", "Cart empty" %>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+</div>
